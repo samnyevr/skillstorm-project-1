@@ -2,9 +2,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import RoommateRecord from "./components/RoommateRecord";
+import AddRoommatePage from "./pages/AddRoommatePage";
 import InventoryRecord from "./components/InventoryRecord";
-import RecordList from "./components/RecordList";
+import MainPage from "./pages/MainPage";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <RecordList />,
+        element: <MainPage />,
       },
     ],
   },
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/createroomate",
-        element: <RoommateRecord />,
+        element: <AddRoommatePage />,
       },
     ],
   },
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/editroomate/:id",
-        element: <RoommateRecord />,
+        element: <AddRoommatePage />,
       },
     ],
   },

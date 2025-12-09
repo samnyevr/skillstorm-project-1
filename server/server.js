@@ -1,17 +1,10 @@
-import express from "express";
-import cors from "cors";
-import roommateRecords from "./routes/roommateRecord.js";
-import inventoryRecords from "./routes/inventoryRecord.js";
+import app from "./app.js";
+import { connectDB } from "./config/db.js";
 
-const PORT = process.env.PORT || 5050;
-const app = express();
+const PORT = 5050;
 
-app.use(cors());
-app.use(express.json());
-app.use("/roommaterecord", roommateRecords);
-app.use("/inventoryrecord", inventoryRecords);
+connectDB();
 
-// start the Express server
 app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+  console.log(`SERVER RUNNING ON PORT ${PORT}`);
 });

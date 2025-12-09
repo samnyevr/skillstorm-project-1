@@ -1,23 +1,26 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-export default function RoommateRecord() {
+export default function AddRoommatePage() {
+  // setting the form interface to capture from details
   const [form, setForm] = useState({
     name: "",
-    position: "",
-    level: "",
+    location: "",
+    description: "",
+    totalStorage: 0,
   });
   const [isNew, setIsNew] = useState(true);
   const params = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
+    // function to fetch individual roommate data from the backend
     async function fetchData() {
       const id = params.id?.toString() || undefined;
       if (!id) return;
       setIsNew(false);
       const response = await fetch(
-        `http://localhost:5050/roommaterecord/${params.id.toString()}`
+        `http://localhost:5050/api/roommates/${params.id.toString()}`
       );
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -26,7 +29,7 @@ export default function RoommateRecord() {
       }
       const record = await response.json();
       if (!record) {
-        console.warn(`RoommateRecord with id ${id} not found`);
+        console.warn(`RoommatePage with id ${id} not found`);
         navigate("/");
         return;
       }
@@ -36,22 +39,22 @@ export default function RoommateRecord() {
     return;
   }, [params.id, navigate]);
 
-  // These methods will update the state properties.
+  // function to update the frontend form properties
   function updateForm(value) {
     return setForm((prev) => {
       return { ...prev, ...value };
     });
   }
 
-  // This function will handle the submission.
+  // function to handle form submition after editing or creating
   async function onSubmit(e) {
     e.preventDefault();
     const person = { ...form };
     try {
       let response;
       if (isNew) {
-        // if we are adding a new record we will POST to /roommaterecord.
-        response = await fetch("http://localhost:5050/roommaterecord", {
+        // if we are adding a new record we will POST to /RoommatePage.
+        response = await fetch("http://localhost:5050/api/roommates", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -59,11 +62,11 @@ export default function RoommateRecord() {
           body: JSON.stringify(person),
         });
       } else {
-        // if we are updating a record we will PATCH to /roommaterecord/:id.
+        // if we are updating a record we will PATCH to /RoommatePage/:id.
         response = await fetch(
-          `http://localhost:5050/roommaterecord/${params.id}`,
+          `http://localhost:5050/api/roommates/${params.id}`,
           {
-            method: "PATCH",
+            method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
@@ -96,12 +99,8 @@ export default function RoommateRecord() {
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-slate-900/10 pb-12 md:grid-cols-2">
           <div>
             <h2 className="text-base font-semibold leading-7 text-slate-900">
-              Employee Info
+              Insert Roommate Info
             </h2>
-            <p className="mt-1 text-sm leading-6 text-slate-600">
-              This information will be displayed publicly so be careful what you
-              share.
-            </p>
           </div>
 
           <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 ">
@@ -131,7 +130,7 @@ export default function RoommateRecord() {
                 htmlFor="position"
                 className="block text-sm font-medium leading-6 text-slate-900"
               >
-                Position
+                Storage Location
               </label>
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
@@ -147,59 +146,51 @@ export default function RoommateRecord() {
                 </div>
               </div>
             </div>
-            <div>
-              <fieldset className="mt-4">
-                <legend className="sr-only">Position Options</legend>
-                <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                  <div className="flex items-center">
-                    <input
-                      id="positionIntern"
-                      name="positionOptions"
-                      type="radio"
-                      value="Intern"
-                      className="h-4 w-4 border-slate-300 text-slate-600 focus:ring-slate-600 cursor-pointer"
-                      checked={form.level === "Intern"}
-                      onChange={(e) => updateForm({ level: e.target.value })}
-                    />
-                    <label
-                      htmlFor="positionIntern"
-                      className="ml-3 block text-sm font-medium leading-6 text-slate-900 mr-4"
-                    >
-                      Intern
-                    </label>
-                    <input
-                      id="positionJunior"
-                      name="positionOptions"
-                      type="radio"
-                      value="Junior"
-                      className="h-4 w-4 border-slate-300 text-slate-600 focus:ring-slate-600 cursor-pointer"
-                      checked={form.level === "Junior"}
-                      onChange={(e) => updateForm({ level: e.target.value })}
-                    />
-                    <label
-                      htmlFor="positionJunior"
-                      className="ml-3 block text-sm font-medium leading-6 text-slate-900 mr-4"
-                    >
-                      Junior
-                    </label>
-                    <input
-                      id="positionSenior"
-                      name="positionOptions"
-                      type="radio"
-                      value="Senior"
-                      className="h-4 w-4 border-slate-300 text-slate-600 focus:ring-slate-600 cursor-pointer"
-                      checked={form.level === "Senior"}
-                      onChange={(e) => updateForm({ level: e.target.value })}
-                    />
-                    <label
-                      htmlFor="positionSenior"
-                      className="ml-3 block text-sm font-medium leading-6 text-slate-900 mr-4"
-                    >
-                      Senior
-                    </label>
-                  </div>
+            <div className="sm:col-span-4">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium leading-6 text-slate-900"
+              >
+                Roommate Description
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="description"
+                    id="description"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="a nice guy/gal"
+                    value={form.description}
+                    onChange={(e) =>
+                      updateForm({ description: e.target.value })
+                    }
+                  />
                 </div>
-              </fieldset>
+              </div>
+            </div>
+            <div className="sm:col-span-4">
+              <label
+                htmlFor="totalStorage"
+                className="block text-sm font-medium leading-6 text-slate-900"
+              >
+                Maximum Storage
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="number"
+                    name="totalStorage"
+                    id="totalStorage"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="0"
+                    value={form.totalStorage}
+                    onChange={(e) =>
+                      updateForm({ totalStorage: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
