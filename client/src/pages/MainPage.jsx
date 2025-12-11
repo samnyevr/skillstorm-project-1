@@ -59,21 +59,21 @@ export default function MainPage() {
     return;
   }, [currentFocusedRoommate]);
 
-  // useEffect(() => {
-  //   inventoryRecords.map((inventory) => {
-  //     setQuantity(quantity + inventory.itemCount);
-  //     console.log(inventory.itemCount);
-  //   });
-  //   console.log(quantity);
-  // }, [inventoryRecords.length]);
-
   // This method will delete a record
-  async function deleteRecord(id) {
+  async function deleteRoommateRecord(id) {
     await fetch(`http://localhost:5050/api/roommates/${id}`, {
       method: "DELETE",
     });
     const newRecords = roommateRecords.filter((el) => el._id !== id);
     setRoommateRecords(newRecords);
+  }
+
+  async function deleteInventoryRecord(id) {
+    await fetch(`http://localhost:5050/api/inventories/${id}`, {
+      method: "DELETE",
+    });
+    const newRecords = inventoryRecords.filter((el) => el._id !== id);
+    setInventoryRecords(newRecords);
   }
 
   // This following section will display the table with the records of individuals.
@@ -109,7 +109,7 @@ export default function MainPage() {
                       records={roommateRecords}
                       setRecords={setRoommateRecords}
                       record={record}
-                      deleteRecord={() => deleteRecord(record._id)}
+                      deleteRecord={() => deleteRoommateRecord(record._id)}
                       key={record._id}
                       setCurrentFocusedRoommate={setCurrentFocusedRoommate}
                       setCurrentFocusedInventory={setCurrentFocusedInventory}
@@ -124,7 +124,7 @@ export default function MainPage() {
                       records={roommateRecords}
                       setRecords={setRoommateRecords}
                       record={record}
-                      deleteRecord={() => deleteRecord(record._id)}
+                      deleteRecord={() => deleteRoommateRecord(record._id)}
                       key={record._id}
                       setCurrentFocusedRoommate={setCurrentFocusedRoommate}
                       setCurrentFocusedInventory={setCurrentFocusedInventory}
@@ -155,8 +155,11 @@ export default function MainPage() {
                             records={inventoryRecords}
                             setRecords={setInventoryRecords}
                             record={record}
-                            deleteRecord={() => deleteRecord(record._id)}
+                            deleteRecord={() =>
+                              deleteInventoryRecord(record._id)
+                            }
                             key={record._id}
+                            currentFocusedRoommate={currentFocusedRoommate}
                             setCurrentFocusedInventory={
                               setCurrentFocusedInventory
                             }
@@ -168,8 +171,11 @@ export default function MainPage() {
                             records={inventoryRecords}
                             setRecords={setInventoryRecords}
                             record={record}
-                            deleteRecord={() => deleteRecord(record._id)}
+                            deleteRecord={() =>
+                              deleteInventoryRecord(record._id)
+                            }
                             key={record._id}
+                            currentFocusedRoommate={currentFocusedRoommate}
                             setCurrentFocusedInventory={
                               setCurrentFocusedInventory
                             }
@@ -190,12 +196,14 @@ export default function MainPage() {
             >
               Add Additional Roommate
             </NavLink>
-            <NavLink
-              className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 h-9 rounded-md px-3"
-              to="/createinventory"
-            >
-              Add Inventory
-            </NavLink>
+            {currentFocusedRoommate && (
+              <NavLink
+                className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 h-9 rounded-md px-3"
+                to={`/createinventory/${currentFocusedRoommate._id.toString()}`}
+              >
+                Add Inventory
+              </NavLink>
+            )}
           </div>
         </section>
       )}

@@ -46,6 +46,7 @@ export default function Roommate(props) {
             <h4 className="text-lg font-semibold p-4 w-full border-b-[1px] border-zinc-300">
               Location:{" "}
             </h4>
+            <p className="p-4">{props.record.location}</p>
             <h4 className="text-lg font-semibold p-4 w-full border-b-[1px] border-zinc-300">
               Description:{" "}
             </h4>

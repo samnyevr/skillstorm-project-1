@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import AddRoommatePage from "./pages/AddRoommatePage";
-import InventoryRecord from "./components/InventoryRecord";
+import AddInventoryPage from "./pages/AddInventoryPage";
 import MainPage from "./pages/MainPage";
 import "./index.css";
 
@@ -39,22 +39,22 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/createinventory",
+    path: "/createinventory/:roommateId",
     element: <App />,
     children: [
       {
-        path: "/createinventory",
-        element: <InventoryRecord />,
+        path: "/createinventory/:roommateId",
+        element: <AddInventoryPage />,
       },
     ],
   },
   {
-    path: "/editinventory/:id",
+    path: "/editinventory/:roommateId/:inventoryId",
     element: <App />,
     children: [
       {
-        path: "/editinventory/:id",
-        element: <InventoryRecord />,
+        path: "/editinventory/:roommateId/:inventoryId",
+        element: <AddInventoryPage />,
       },
     ],
   },

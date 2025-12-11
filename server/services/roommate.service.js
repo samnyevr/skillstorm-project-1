@@ -9,37 +9,37 @@ export const RoommateService = {
     };
   },
   getRoommateById: async (roommateId) => {
-    const roomamtes = await RoommateRepo.getRoommateById(roommateId);
+    const roommates = await RoommateRepo.getRoommateById(roommateId);
 
     return {
-      roomamtes,
+      roommates,
     };
   },
 
   createRoommate: async (roommateData) => {
-    const roomamtes = await RoommateRepo.createRoommate(roommateData);
+    const roommates = await RoommateRepo.createRoommate(roommateData);
 
     return {
-      roomamtes,
+      roommates,
     };
   },
 
   updateRoommate: async (roommateId, roommateData) => {
-    const roomamtes = await RoommateRepo.updateRoommate(
+    const roommates = await RoommateRepo.updateRoommate(
       roommateId,
       roommateData
     );
 
     return {
-      roomamtes,
+      roommates,
     };
   },
 
   deleteRoommate: async (roommateId) => {
-    const roomamtes = await RoommateRepo.deleteRoommate(roommateId);
+    const roommates = await RoommateRepo.deleteRoommate(roommateId);
 
     return {
-      roomamtes,
+      roommates,
     };
   },
 };
