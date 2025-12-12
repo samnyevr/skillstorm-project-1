@@ -9,10 +9,15 @@ export const RoommateService = {
     };
   },
   getRoommateById: async (roommateId) => {
-    const roommates = await RoommateRepo.getRoommateById(roommateId);
+    const { inventories, roommate } = await RoommateRepo.getRoommateById(
+      roommateId
+    );
+
+    const quantity = inventories.reduce((acc, cur) => acc + cur.itemCount, 0);
 
     return {
-      roommates,
+      quantity,
+      roommate,
     };
   },
 

@@ -1,19 +1,41 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function AddInventoryPage() {
   const [form, setForm] = useState({
     itemName: "",
-    itemCount: 1,
+    itemCount: 0,
     itemDescription: "",
     belongsTo: null,
   });
   const [isNew, setIsNew] = useState(true);
   const params = useParams();
   const navigate = useNavigate();
+  const [maxQuantity, setMaxQuantity] = useState(0);
+  const [roommate, setRoommate] = useState("");
+
+  let isSet = false;
 
   useEffect(() => {
     async function fetchData() {
+      // get the max quantity so we can check for item count addition
+      const quantityResponse = await fetch(
+        `http://localhost:5050/api/roommates/${params.roommateId}`
+      );
+      if (!quantityResponse.ok) {
+        const message = `An error has occurred: ${quantityResponse.statusText}`;
+        console.error(message);
+        return;
+      }
+      const quantityRecord = await quantityResponse.json();
+
+      const calculate =
+        quantityRecord.roommate.totalStorage - quantityRecord.quantity;
+
+      setMaxQuantity(calculate);
+      setRoommate(quantityRecord.roommate.name);
+
       const inventoryId = params.inventoryId?.toString() || undefined;
       if (!inventoryId) {
         return;
@@ -34,6 +56,13 @@ export default function AddInventoryPage() {
         return;
       }
       setForm(record.inventory);
+
+      if (!isSet) {
+        setMaxQuantity((prev) => {
+          return prev + record.inventory.itemCount;
+        });
+        isSet = true;
+      }
     }
     fetchData();
     if (params.roommateId) {
@@ -42,8 +71,22 @@ export default function AddInventoryPage() {
     return;
   }, [params.id, navigate]);
 
+  useEffect(() => {
+    fetchQuantity();
+  }, []);
+
+  async function fetchQuantity() {}
+
   // These methods will update the state properties.
-  function updateForm(value) {
+  async function updateForm(value) {
+    if (value.itemCount) {
+      if (value.itemCount >= maxQuantity) {
+        toast.error(`you have reached the maximum capacity for ${roommate}`, {
+          position: "bottom-center",
+        });
+      }
+    }
+
     return setForm((prev) => {
       return { ...prev, ...value };
     });
@@ -135,27 +178,7 @@ export default function AddInventoryPage() {
                     placeholder="Chips"
                     value={form.itemName}
                     onChange={(e) => updateForm({ itemName: e.target.value })}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="itemCount"
-                className="block text-sm font-medium leading-6 text-slate-900"
-              >
-                Item Count
-              </label>
-              <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <input
-                    type="number"
-                    name="itemCount"
-                    id="itemCount"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="1"
-                    value={form.itemCount}
-                    onChange={(e) => updateForm({ itemCount: e.target.value })}
+                    required
                   />
                 </div>
               </div>
@@ -183,6 +206,29 @@ export default function AddInventoryPage() {
                 </div>
               </div>
             </div>
+            <div className="sm:col-span-4">
+              <label
+                htmlFor="itemCount"
+                className="block text-sm font-medium leading-6 text-slate-900"
+              >
+                Item Count
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="number"
+                    name="itemCount"
+                    id="itemCount"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="1"
+                    min="1"
+                    max={`${maxQuantity}`}
+                    value={form.itemCount ? form.itemCount : 1}
+                    onChange={(e) => updateForm({ itemCount: e.target.value })}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div className="flex justify-between">
@@ -197,10 +243,11 @@ export default function AddInventoryPage() {
           <input
             type="submit"
             value="Save Inventory Record"
-            className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 hover:text-accent-foreground h-9 rounded-md px-3 cursor-pointer mt-4"
+            className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-green-500 hover:bg-green-400 hover:text-accent-foreground h-9 rounded-md px-3 cursor-pointer mt-4"
           />
         </div>
       </form>
+      <Toaster />
     </>
   );
 }

@@ -30,8 +30,8 @@ export const RoommateController = {
   },
   deleteRoommate: async (req, res) => {
     try {
-      const roomamtes = await RoommateService.deleteRoommate(req.params.id);
-      res.json(roomamtes);
+      const roommates = await RoommateService.deleteRoommate(req.params.id);
+      res.json(roommates);
     } catch (error) {
       res.status(400).json(error.message);
     }

@@ -7,7 +7,7 @@ export default function AddRoommatePage() {
     name: "",
     location: "",
     description: "",
-    totalStorage: 0,
+    totalStorage: 5,
   });
   const [isNew, setIsNew] = useState(true);
   const params = useParams();
@@ -33,7 +33,8 @@ export default function AddRoommatePage() {
         navigate("/");
         return;
       }
-      setForm(record.roommates);
+      console.log(record.quantity);
+      setForm(record.roommate);
     }
     fetchData();
     return;
@@ -134,7 +135,7 @@ export default function AddRoommatePage() {
             </div>
             <div className="sm:col-span-4">
               <label
-                htmlFor="position"
+                htmlFor="location"
                 className="block text-sm font-medium leading-6 text-slate-900"
               >
                 Storage Location
@@ -147,7 +148,7 @@ export default function AddRoommatePage() {
                     id="location"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="Top Shelf"
-                    value={form.position}
+                    value={form.location}
                     onChange={(e) => updateForm({ location: e.target.value })}
                     required
                   />
@@ -191,8 +192,9 @@ export default function AddRoommatePage() {
                     name="totalStorage"
                     id="totalStorage"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="0"
-                    value={form.totalStorage}
+                    placeholder="5"
+                    value={form.totalStorage ? form.totalStorage : 5}
+                    min="1"
                     onChange={(e) =>
                       updateForm({ totalStorage: e.target.value })
                     }
@@ -215,7 +217,7 @@ export default function AddRoommatePage() {
           <input
             type="submit"
             value="Save Roommate Record"
-            className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 hover:text-accent-foreground h-9 rounded-md px-3 cursor-pointer mt-4"
+            className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-green-500 hover:bg-green-400 hover:text-accent-foreground h-9 rounded-md px-3 cursor-pointer mt-4"
           />
         </div>
       </form>

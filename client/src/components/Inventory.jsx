@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Inventory(props) {
+  function handleWarning(event) {
+    event.stopPropagation();
+    props.deleteRecord(props.record._id);
+    props.setCurrentFocusedRoommate(null);
+    props.setCurrentFocusedInventory(null);
+  }
+
   return (
     <article
       className={`flex justify-center  flex-col border rounded-lg overflow-hidden p-4 min-w-[240px] min-h-[240px] cursor-pointer hover:bg-neutral-100 ${
@@ -51,7 +58,7 @@ export default function Inventory(props) {
           <footer className="mt-auto flex gap-2">
             <Link
               className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 h-9 rounded-md px-3"
-              to={`/editinventory/${props.currentFocusedRoommate._id}/${props.record._id}`}
+              to={`/editinventory/${props.currentFocusedRoommate?._id}/${props.record._id}`}
             >
               Edit
             </Link>
@@ -59,12 +66,43 @@ export default function Inventory(props) {
               className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 hover:text-accent-foreground h-9 rounded-md px-3"
               color="red"
               type="button"
-              onClick={() => {
-                props.deleteRecord(props.record._id);
+              onClick={(event) => {
+                console.log(event);
+                event.stopPropagation();
+                document
+                  .getElementById(`modal-${props.record._id}`)
+                  .showModal();
               }}
             >
               Delete
             </button>
+            <dialog id={`modal-${props.record._id}`} className="modal">
+              <div className="modal-box">
+                <h3 className="font-bold text-lg text-red-500">Warning</h3>
+                <p className="py-4">
+                  Are you sure you want to delete this record
+                </p>
+                <div className="modal-action">
+                  <form method="dialog">
+                    {/* if there is a button in form, it will close the modal */}
+                    <button
+                      className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 h-9 rounded-md px-3"
+                      onClick={(event) => event.stopPropagation()}
+                    >
+                      Close
+                    </button>
+                    <button
+                      className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-red-500 hover:bg-red-700 h-9 rounded-md px-3 ml-4"
+                      onClick={(event) => {
+                        handleWarning(event);
+                      }}
+                    >
+                      Confirm
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
           </footer>
         </>
       )}

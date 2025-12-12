@@ -59,8 +59,29 @@ export default function MainPage() {
     return;
   }, [currentFocusedRoommate]);
 
+  function showConfirmation(message) {
+    document.getElementById("my_modal_1").showModal();
+    return new Promise((res, rej) => {
+      const target = document.querySelector("#my_modal_1 .btn");
+      const model = document.querySelector("#my_modal_1");
+      target.addEventListener("click", function () {
+        res();
+      });
+      const universalListener = document.addEventListener(
+        "click",
+        function (event) {
+          if (!model.contains(event.target)) {
+            document.removeEventListener("click", universalListener);
+            rej();
+          }
+        }
+      );
+    });
+  }
+
   // This method will delete a record
   async function deleteRoommateRecord(id) {
+    console.log(id);
     await fetch(`http://localhost:5050/api/roommates/${id}`, {
       method: "DELETE",
     });
@@ -189,16 +210,16 @@ export default function MainPage() {
             }
             return;
           })}
-          <div className="flex gap-x-2">
+          <div className="flex gap-x-2 w-full">
             <NavLink
-              className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 h-9 rounded-md px-3"
+              className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 h-9 rounded-md px-10 py-6 ml-auto"
               to="/createroomate"
             >
               Add Additional Roommate
             </NavLink>
             {currentFocusedRoommate && (
               <NavLink
-                className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 h-9 rounded-md px-3"
+                className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 h-9 rounded-md px-10 py-6 px-10"
                 to={`/createinventory/${currentFocusedRoommate._id.toString()}`}
               >
                 Add Inventory

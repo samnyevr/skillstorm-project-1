@@ -17,7 +17,6 @@ export const InventoryService = {
   },
   getInventoryByRoommate: async (roommateId) => {
     const inventory = await InventoryRepo.getInventoryByRoommate(roommateId);
-    console.log(inventory);
     return {
       inventory,
     };
