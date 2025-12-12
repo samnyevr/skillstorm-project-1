@@ -3,8 +3,12 @@
 @tailwind utilities;
 @plugin "daisyui";
 
-.w-9\/20 {
-  width: 45%;
+.md\:gap-20 {
+  gap: 5px;
+}
+
+label.input:has(input[type="search"]) {
+  width: 200px;
 }
 
 .hover\:bg-neutral-100:hover {
@@ -19,5 +23,11 @@
   background-color: black;
 }
 
-.hover\:text-accent-foreground {
+@media screen and (min-width: 1024px) {
+  .w-9\/20 {
+    width: 45%;
+  }
+  .md\:gap-20 {
+    gap: 20px;
+  }
 }

@@ -15,6 +15,16 @@ export const InventoryController = {
     );
     res.json(inventories);
   },
+  getInventoryByFind: async (req, res) => {
+    const inventories = await InventoryService.getInventoryByFind(
+      req.params.word
+    );
+    res.json(inventories);
+  },
+  getInventoryByFilter: async (req, res) => {
+    const inventories = await InventoryService.getInventoryByFind(req.query);
+    res.json();
+  },
   createInventory: async (req, res) => {
     const inventories = await InventoryService.createInventory(req.body);
     res.json(inventories);

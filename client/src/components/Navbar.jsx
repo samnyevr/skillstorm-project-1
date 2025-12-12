@@ -1,5 +1,10 @@
 import { NavLink } from "react-router-dom";
 
+/**
+ * Navigation bar for the Roommate Pantry app.
+ * Provides quick access to the homepage and the "Add Roommate" page.
+ * @returns {JSX.Element} Navbar component
+ */
 export default function Navbar() {
   return (
     <div>

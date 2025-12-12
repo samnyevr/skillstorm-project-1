@@ -2,24 +2,51 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
+/**
+ * AddInventoryPage
+ *
+ * Handles creation and updating of inventory records for a specific roommate.
+ * Supports:
+ * - Fetching roommate capacity and existing inventory details
+ * - Validating inventory item count against available storage
+ * - Submitting new or updated inventory records
+ *
+ * URL Params:
+ *  - roommateId : ID of the roommate this inventory belongs to
+ *  - inventoryId (optional) : ID of an inventory record being edited
+ *
+ * @returns {JSX.Element}
+ */
 export default function AddInventoryPage() {
+  /**
+   * Form state for the inventory record.
+   */
   const [form, setForm] = useState({
     itemName: "",
     itemCount: 0,
     itemDescription: "",
     belongsTo: null,
   });
+
+  /** Whether the form is creating a new record or editing */
   const [isNew, setIsNew] = useState(true);
   const params = useParams();
   const navigate = useNavigate();
+
+  /** Maximum number of items the roommate can still store */
   const [maxQuantity, setMaxQuantity] = useState(0);
+
+  /** Roommate's display name (used for toast messages) */
   const [roommate, setRoommate] = useState("");
 
   let isSet = false;
 
+  /**
+   * Fetch roommate capacity and (if editing) preload inventory data.
+   */
   useEffect(() => {
     async function fetchData() {
-      // get the max quantity so we can check for item count addition
+      // Fetch roommate capacity and current inventory total
       const quantityResponse = await fetch(
         `http://localhost:5050/api/roommates/${params.roommateId}`
       );
@@ -36,6 +63,7 @@ export default function AddInventoryPage() {
       setMaxQuantity(calculate);
       setRoommate(quantityRecord.roommate.name);
 
+      // If editing, load the inventory record
       const inventoryId = params.inventoryId?.toString() || undefined;
       if (!inventoryId) {
         return;
@@ -75,9 +103,12 @@ export default function AddInventoryPage() {
     fetchQuantity();
   }, []);
 
-  async function fetchQuantity() {}
-
-  // These methods will update the state properties.
+  /**
+   * Update form fields.
+   * Includes validation to prevent exceeding roommate storage capacity.
+   *
+   * @param {Object} value - Partial form update.
+   */
   async function updateForm(value) {
     if (value.itemCount) {
       if (value.itemCount >= maxQuantity) {
@@ -92,14 +123,19 @@ export default function AddInventoryPage() {
     });
   }
 
-  // This function will handle the submission.
+  /**
+   * Submit form handler.
+   * Sends POST or PUT request depending on isNew flag.
+   *
+   * @param {Event} e
+   */
   async function onSubmit(e) {
     e.preventDefault();
     const person = { ...form };
     try {
       let response;
       if (isNew) {
-        // if we are adding a new record we will POST to /api/inventories.
+        // POST (create)
         response = await fetch("http://localhost:5050/api/inventories", {
           method: "POST",
           headers: {
@@ -108,7 +144,7 @@ export default function AddInventoryPage() {
           body: JSON.stringify(person),
         });
       } else {
-        // if we are updating a record we will PUT to /api/inventories/:inventoryId.
+        // PUT (update)
         response = await fetch(
           `http://localhost:5050/api/inventories/${params.inventoryId}`,
           {
@@ -127,6 +163,7 @@ export default function AddInventoryPage() {
     } catch (error) {
       console.error("A problem occurred with your fetch operation: ", error);
     } finally {
+      // Reset form and return home
       setForm({
         itemName: "",
         itemCount: 1,

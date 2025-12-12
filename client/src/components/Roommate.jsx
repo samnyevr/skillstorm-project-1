@@ -2,7 +2,57 @@ import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
+/**
+ * Roommate card component used to display a roommate and its details.
+ * Handles expanding, fetching inventory capacity, and delete confirmation.
+ *
+ * @param {Object} props
+ * @param {Object} props.record - The roommate record being displayed.
+ * @param {Array} props.records - Array of all roommate records.
+ * @param {Function} props.setRecords - Setter for roomate records.
+ * @param {Function} props.setCurrentFocusedRoommate - Sets the currently selected roommate.
+ * @param {Object|null} props.currentFocusedRoommate - Currently selected roommate.
+ * @param {Function} props.setCurrentFocusedInventory - Clears the focused inventory when switching roommates.
+ * @param {Function} props.deleteRecord - Deletes a roommate.
+ * @param {number} props.quantity - Current total inventory count for this roommate.
+ * @param {Function} props.setQuantity - Setter for inventory quantity.
+ * @param {Function} props.setShowAddInventory - Controls whether the "Add Inventory" button is visible.
+ */
 export default function Roommate(props) {
+  let quantity = 0;
+
+  /**
+   * Fetches inventory items for the focused roommate and updates remaining capacity.
+   */
+  useEffect(() => {
+    async function getInventoryRecords(url) {
+      if (!props.currentFocusedRoommate) return;
+      quantity = 0;
+      const response = await fetch(url);
+      if (!response.ok) {
+        const message = `An error occurred: ${response.statusText}`;
+        console.log(message);
+        return;
+      }
+      const records = await response.json();
+
+      console.log(quantity);
+
+      await records.inventory.map((record) => {
+        quantity += record.itemCount;
+      });
+      props.setShowAddInventory(props.record.totalStorage > quantity);
+    }
+    getInventoryRecords(
+      `http://localhost:5050/api/inventories/roommate/${props.currentFocusedRoommate?._id}`
+    );
+    return;
+  }, [props.currentFocusedRoommate]);
+
+  /**
+   * Handles confirming deletion of a roommate.
+   * @param {Event} event
+   */
   function handleWarning(event) {
     event.stopPropagation();
     props.deleteRecord(props.record._id);
@@ -12,7 +62,7 @@ export default function Roommate(props) {
 
   return (
     <article
-      className={`flex justify-center  flex-col border rounded-lg overflow-hidden p-4 min-w-[240px] min-h-[240px] cursor-pointer hover:bg-neutral-100 ${
+      className={`flex justify-center  flex-col border rounded-lg overflow-hidden p-4 md:min-w-[240px] md:min-h-[240px] cursor-pointer hover:bg-neutral-100 ${
         props.record.isClicked ? "w-full items-start" : "items-center"
       }`}
       onClick={() => {
@@ -67,17 +117,18 @@ export default function Roommate(props) {
           </section>
           <footer className="mt-auto flex gap-2">
             <Link
-              className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 h-9 rounded-md px-3"
+              className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-green-100 hover:bg-green-300 h-9 rounded-md px-3 ml-3"
               to={`/editroomate/${props.record._id}`}
             >
               Edit
             </Link>
             <button
-              className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 hover:text-accent-foreground h-9 rounded-md px-3"
-              color="red"
+              className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-red-100 hover:bg-red-300 hover:text-accent-foreground h-9 rounded-md px-3"
               type="button"
+              /**
+               * Opens the delete confirmation modal.
+               */
               onClick={(event) => {
-                console.log(event);
                 event.stopPropagation();
                 document
                   .getElementById(`modal-${props.record._id}`)

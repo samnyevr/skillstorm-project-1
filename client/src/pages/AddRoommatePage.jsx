@@ -1,6 +1,21 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
+/**
+ * AddRoommatePage Component
+ *
+ * This page handles both **creating** and **editing** roommate records.
+ * - If an `id` is present in the URL → loads existing roommate info and updates.
+ * - If no `id` is present → creates a new roommate.
+ *
+ * Features:
+ * - Form for name, description, location, and maximum storage.
+ * - Fetches existing roommate data when editing.
+ * - Submits data via POST (create) or PUT (update).
+ *
+ * @component
+ * @returns {JSX.Element} The Add/Edit Roommate form page.
+ */
 export default function AddRoommatePage() {
   // setting the form interface to capture from details
   const [form, setForm] = useState({
@@ -13,6 +28,12 @@ export default function AddRoommatePage() {
   const params = useParams();
   const navigate = useNavigate();
 
+  /**
+   * Fetch roommate data if `id` is present.
+   *
+   * Runs only when editing an existing roommate.
+   * Loads data from backend API and fills the form state.
+   */
   useEffect(() => {
     // function to fetch individual roommate data from the backend
     async function fetchData() {
@@ -33,21 +54,33 @@ export default function AddRoommatePage() {
         navigate("/");
         return;
       }
-      console.log(record.quantity);
       setForm(record.roommate);
     }
     fetchData();
     return;
   }, [params.id, navigate]);
 
-  // function to update the frontend form properties
+  /**
+   * Updates form state by merging new values.
+   *
+   * @param {Object} value - Partial form fields to update.
+   * @returns {void}
+   */
   function updateForm(value) {
     return setForm((prev) => {
       return { ...prev, ...value };
     });
   }
 
-  // function to handle form submition after editing or creating
+  /**
+   * Handles form submission.
+   *
+   * Sends POST request for new roommate creation,
+   * or PUT request for updating an existing roommate.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} e - Form submit event.
+   * @returns {Promise<void>}
+   */
   async function onSubmit(e) {
     e.preventDefault();
     const person = { ...form };
@@ -82,7 +115,12 @@ export default function AddRoommatePage() {
     } catch (error) {
       console.error("A problem occurred with your fetch operation: ", error);
     } finally {
-      setForm({ name: "", position: "", level: "" });
+      setForm({
+        name: "",
+        location: "",
+        description: "",
+        totalStorage: 5,
+      });
       navigate("/");
     }
   }
@@ -196,7 +234,7 @@ export default function AddRoommatePage() {
                     value={form.totalStorage ? form.totalStorage : 5}
                     min="1"
                     onChange={(e) =>
-                      updateForm({ totalStorage: e.target.value })
+                      updateForm({ totalStorage: Number(e.target.value) })
                     }
                     required
                   />
