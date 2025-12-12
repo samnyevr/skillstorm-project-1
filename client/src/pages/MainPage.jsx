@@ -152,11 +152,11 @@ export default function MainPage() {
       {Array.isArray(roommateRecords) && roommateRecords.length === 0 ? (
         <section className="flex h-96 gap-10">
           <a
-            className="flex-1 inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 rounded-md px-3"
+            className="mainCheckpoint flex-1 inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-orange-200 hover:bg-orange-400 rounded-md px-3"
             href="/createroomate"
             data-discover="true"
           >
-            Click Here to add your roommate
+            <p>Click Here to add your roommate</p>
           </a>
         </section>
       ) : (

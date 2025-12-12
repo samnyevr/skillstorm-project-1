@@ -2,7 +2,7 @@
   {
     "_id": { "$oid": "675b20000000000000000001" },
     "name": "Alex Johnson",
-    "totalStorage": 25,
+    "totalStorage": 55,
     "description": "Loves cooking and keeps most of the grains and pastas."
   },
   {

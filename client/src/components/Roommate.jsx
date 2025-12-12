@@ -44,8 +44,13 @@ export default function Roommate(props) {
     getInventoryRecords(
       `http://localhost:5050/api/inventories/roommate/${props.currentFocusedRoommate?._id}`
     );
+
     return;
   }, [props.currentFocusedRoommate]);
+
+  useEffect(() => {
+    fillCard();
+  }, []);
 
   /**
    * Handles confirming deletion of a roommate.
@@ -58,9 +63,57 @@ export default function Roommate(props) {
     props.setCurrentFocusedInventory(null);
   }
 
+  async function fillCard() {
+    let fillArea = document.querySelectorAll("div.fillArea");
+
+    Array.from(fillArea).forEach((ele) => {
+      let randomQuantity = quantity ? quantity : Math.random().toFixed(2);
+
+      let fillPercentage = 1.0 * randomQuantity * 100;
+      if (fillPercentage < 50) {
+        const classPattern = /^bg-/; // regex to match classes starting with 'foo-'
+
+        // Iterate through all classes and remove those that match the regex
+        ele.classList.forEach((cls) => {
+          if (classPattern.test(cls)) {
+            console.log(cls);
+            element.classList.remove(cls);
+          }
+        });
+
+        ele.classList.add("bg-green-100");
+        ele.style.height = `${fillPercentage}%`;
+      } else if (fillPercentage < 80) {
+        const classPattern = /^bg-/; // regex to match classes starting with 'foo-'
+
+        // Iterate through all classes and remove those that match the regex
+        ele.classList.forEach((cls) => {
+          if (classPattern.test(cls)) {
+            element.classList.remove(cls);
+          }
+        });
+
+        ele.classList.add("bg-yellow-100");
+        ele.style.height = `${fillPercentage}%`;
+      } else {
+        const classPattern = /^bg-/; // regex to match classes starting with 'foo-'
+
+        // Iterate through all classes and remove those that match the regex
+        ele.classList.forEach((cls) => {
+          if (classPattern.test(cls)) {
+            element.classList.remove(cls);
+          }
+        });
+
+        ele.classList.add("bg-red-100");
+        ele.style.height = `${fillPercentage}%`;
+      }
+    });
+  }
+
   return (
     <article
-      className={`flex justify-center  flex-col border rounded-lg overflow-hidden p-4 md:min-w-[240px] md:min-h-[240px] cursor-pointer hover:bg-neutral-100 ${
+      className={`cardDesign flex justify-center  flex-col border rounded-lg overflow-hidden p-4 md:min-w-[240px] md:min-h-[240px] cursor-pointer hover:bg-neutral-100 ${
         props.record.isClicked ? "w-full items-start" : "items-center"
       }`}
       onClick={() => {
@@ -165,6 +218,8 @@ export default function Roommate(props) {
           </footer>
         </>
       )}
+
+      <div className="fillArea"></div>
     </article>
   );
 }

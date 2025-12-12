@@ -23,6 +23,41 @@ label.input:has(input[type="search"]) {
   background-color: black;
 }
 
+article.cardDesign {
+  position: relative;
+}
+
+article.cardDesign * {
+  position: relative;
+  z-index: 1;
+}
+
+article.cardDesign .fillArea {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  z-index: -1;
+}
+
+.mainCheckpoint {
+  background-image: url(./assets/logo/roomate-pantry-transparent.webp);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: top left;
+  height: 60vh;
+}
+
+a.mainCheckpoint {
+}
+
+a.mainCheckpoint p {
+  font-size: 3em;
+  margin-left: auto;
+  margin-right: 2em;
+  color: oklch(37.2% 0.044 257.287);
+}
+
 @media screen and (min-width: 1024px) {
   .w-9\/20 {
     width: 45%;
