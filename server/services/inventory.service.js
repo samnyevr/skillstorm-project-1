@@ -9,7 +9,7 @@ export const InventoryService = {
    * @returns {Promise<{inventory: Array}>} Object containing array of all inventory items
    */
   getAllInventory: async () => {
-    const { inventory } = await InventoryRepo.getAllInventory();
+    const inventory = await InventoryRepo.getAllInventory();
     return { inventory };
   },
 

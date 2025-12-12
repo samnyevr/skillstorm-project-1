@@ -39,7 +39,7 @@ router.get("/find/:word", InventoryController.getInventoryByFind);
  * @desc Filter inventory items based on query parameters
  * @access Public
  */
-router.get("/filter", InventoryController.getInventoryByFilter);
+router.get("/filter/filterword", InventoryController.getInventoryByFilter);
 
 /**
  * @route POST /api/inventories

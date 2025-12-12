@@ -219,7 +219,7 @@ export default function MainPage() {
                 <div
                   className={`border rounded-lg overflow-hidden p-4 grow w-9/20`}
                 >
-                  <div className="flex flex-wrap items-center">
+                  <div className="flex flex-wrap items-center justify-between">
                     <h3 className="text-lg font-semibold p-4">
                       Inventory Records
                     </h3>
@@ -284,29 +284,103 @@ export default function MainPage() {
                         K
                       </kbd>
                     </label>
-                    <form className="filter">
+                    <form className="filter flex items-center">
+                      <h4 className="text-lg font-semibold p-4">Quantity:</h4>
+                      <label
+                        onClick={async (e) => {
+                          e.target.classList.add("bg-gray-100");
+                          const response = await fetch(
+                            `http://localhost:5050/api/inventories/filter/filterword?itemCount=10`
+                          );
+                          if (!response.ok) {
+                            const message = `An error occurred: ${response.statusText}`;
+                            console.log(message);
+                            return;
+                          }
+                          const records = await response.json();
+                          console.log(records);
+
+                          setInventoryRecords(records.inventory);
+                        }}
+                        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-gray-300 h-9 rounded-md px-3 mx-1"
+                      >
+                        10
+                        <input
+                          className="btn"
+                          type="radio"
+                          name="inventoryFilter"
+                          value="10"
+                          aria-label="Svelte"
+                        />
+                      </label>
+                      <label
+                        onClick={async (e) => {
+                          e.target.classList.add("bg-gray-100");
+
+                          const response = await fetch(
+                            `http://localhost:5050/api/inventories/filter/filterword?itemCount=20`
+                          );
+                          if (!response.ok) {
+                            const message = `An error occurred: ${response.statusText}`;
+                            console.log(message);
+                            return;
+                          }
+                          const records = await response.json();
+
+                          setInventoryRecords(records.inventory);
+                        }}
+                        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-gray-300 h-9 rounded-md px-3 mx-1"
+                      >
+                        <input
+                          className="btn"
+                          type="radio"
+                          name="inventoryFilter"
+                          value="20"
+                          aria-label="Vue"
+                        />
+                        20
+                      </label>
+                      <label
+                        onClick={async (e) => {
+                          e.target.classList.add("bg-gray-100");
+
+                          const response = await fetch(
+                            `http://localhost:5050/api/inventories/filter/filterword?itemCount=50`
+                          );
+                          if (!response.ok) {
+                            const message = `An error occurred: ${response.statusText}`;
+                            console.log(message);
+                            return;
+                          }
+                          const records = await response.json();
+
+                          setInventoryRecords(records.inventory);
+                        }}
+                        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-gray-300 h-9 rounded-md px-3 mx-1"
+                      >
+                        <input
+                          className="btn"
+                          type="radio"
+                          name="inventoryFilter"
+                          value="50"
+                          aria-label="React"
+                        />
+                        50
+                      </label>
                       <input
-                        className="btn btn-square"
+                        className="btn btn-square border"
                         type="reset"
                         value="×"
-                      />
-                      <input
-                        className="btn"
-                        type="radio"
-                        name="frameworks"
-                        aria-label="Svelte"
-                      />
-                      <input
-                        className="btn"
-                        type="radio"
-                        name="frameworks"
-                        aria-label="Vue"
-                      />
-                      <input
-                        className="btn"
-                        type="radio"
-                        name="frameworks"
-                        aria-label="React"
+                        onClick={() => {
+                          Array.from(
+                            document.querySelectorAll("form.filter label")
+                          ).forEach((ele) => {
+                            ele.classList.remove("bg-gray-100");
+                          });
+
+                          let newCurrent = { ...currentFocusedRoommate };
+                          setCurrentFocusedRoommate(newCurrent);
+                        }}
                       />
                     </form>
                   </div>

@@ -99,10 +99,6 @@ export default function AddInventoryPage() {
     return;
   }, [params.id, navigate]);
 
-  useEffect(() => {
-    fetchQuantity();
-  }, []);
-
   /**
    * Update form fields.
    * Includes validation to prevent exceeding roommate storage capacity.

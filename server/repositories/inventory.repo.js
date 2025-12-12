@@ -46,7 +46,13 @@ export const InventoryRepo = {
    * @param {Object} query - Query object (field/value pairs)
    * @returns {Promise<Array>} Array of filtered inventory documents
    */
-  getInventoryByFilter: async (query) => {},
+  getInventoryByFilter: async (query) => {
+    const inventories = await Inventory.find({
+      itemCount: { $gt: query },
+    });
+    console.log(inventories);
+    return inventories;
+  },
 
   /**
    * Create a new inventory item. If an item with the same name exists for the roommate, it updates the count.

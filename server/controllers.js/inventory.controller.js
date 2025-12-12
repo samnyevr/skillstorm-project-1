@@ -57,7 +57,9 @@ export const InventoryController = {
    * @param {import('express').Response} res - Response object
    */
   getInventoryByFilter: async (req, res) => {
-    const inventories = await InventoryService.getInventoryByFind(req.query);
+    const inventories = await InventoryService.getInventoryByFilter(
+      req.query.itemCount
+    );
     res.json(inventories);
   },
 
