@@ -36,8 +36,6 @@ export default function Roommate(props) {
       }
       const records = await response.json();
 
-      console.log(quantity);
-
       await records.inventory.map((record) => {
         quantity += record.itemCount;
       });

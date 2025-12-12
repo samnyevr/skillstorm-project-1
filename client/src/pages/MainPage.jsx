@@ -124,7 +124,6 @@ export default function MainPage() {
    * @param {string} id - Roommate document ID.
    */
   async function deleteRoommateRecord(id) {
-    console.log(id);
     await fetch(`http://localhost:5050/api/roommates/${id}`, {
       method: "DELETE",
     });
@@ -298,9 +297,16 @@ export default function MainPage() {
                             return;
                           }
                           const records = await response.json();
-                          console.log(records);
 
-                          setInventoryRecords(records.inventory);
+                          const newRecords = records.inventory.filter(
+                            (record) => {
+                              return (
+                                record.belongsTo === currentFocusedRoommate._id
+                              );
+                            }
+                          );
+
+                          setInventoryRecords(newRecords);
                         }}
                         className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-gray-300 h-9 rounded-md px-3 mx-1"
                       >
@@ -327,7 +333,15 @@ export default function MainPage() {
                           }
                           const records = await response.json();
 
-                          setInventoryRecords(records.inventory);
+                          const newRecords = records.inventory.filter(
+                            (record) => {
+                              return (
+                                record.belongsTo === currentFocusedRoommate._id
+                              );
+                            }
+                          );
+
+                          setInventoryRecords(newRecords);
                         }}
                         className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-gray-300 h-9 rounded-md px-3 mx-1"
                       >
@@ -354,7 +368,15 @@ export default function MainPage() {
                           }
                           const records = await response.json();
 
-                          setInventoryRecords(records.inventory);
+                          const newRecords = records.inventory.filter(
+                            (record) => {
+                              return (
+                                record.belongsTo === currentFocusedRoommate._id
+                              );
+                            }
+                          );
+
+                          setInventoryRecords(newRecords);
                         }}
                         className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-gray-300 h-9 rounded-md px-3 mx-1"
                       >

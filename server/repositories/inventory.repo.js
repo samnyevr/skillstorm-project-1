@@ -50,7 +50,6 @@ export const InventoryRepo = {
     const inventories = await Inventory.find({
       itemCount: { $gt: query },
     });
-    console.log(inventories);
     return inventories;
   },
 

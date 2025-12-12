@@ -1,0 +1,72 @@
+[
+  {
+    "_id": { "$oid": "675b30000000000000000001" },
+    "itemName": "Spaghetti",
+    "itemCount": 4,
+    "itemDescription": "Whole wheat spaghetti packs",
+    "belongsTo": { "$oid": "675b20000000000000000001" }
+  },
+  {
+    "_id": { "$oid": "675b30000000000000000002" },
+    "itemName": "Olive Oil",
+    "itemCount": 1,
+    "itemDescription": "Extra virgin, 1L bottle",
+    "belongsTo": { "$oid": "675b20000000000000000001" }
+  },
+  {
+    "_id": { "$oid": "675b30000000000000000003" },
+    "itemName": "Oat Milk",
+    "itemCount": 3,
+    "itemDescription": "Barista edition cartons",
+    "belongsTo": { "$oid": "675b20000000000000000002" }
+  },
+  {
+    "_id": { "$oid": "675b30000000000000000004" },
+    "itemName": "Tofu",
+    "itemCount": 2,
+    "itemDescription": "Firm tofu blocks",
+    "belongsTo": { "$oid": "675b20000000000000000002" }
+  },
+  {
+    "_id": { "$oid": "675b30000000000000000005" },
+    "itemName": "Chips",
+    "itemCount": 6,
+    "itemDescription": "Assorted bags of chips",
+    "belongsTo": { "$oid": "675b20000000000000000003" }
+  },
+  {
+    "_id": { "$oid": "675b30000000000000000006" },
+    "itemName": "Soda",
+    "itemCount": 12,
+    "itemDescription": "Cans of lemon-lime soda",
+    "belongsTo": { "$oid": "675b20000000000000000003" }
+  },
+  {
+    "_id": { "$oid": "675b30000000000000000007" },
+    "itemName": "Flour",
+    "itemCount": 2,
+    "itemDescription": "All-purpose flour, 5lb bags",
+    "belongsTo": { "$oid": "675b20000000000000000004" }
+  },
+  {
+    "_id": { "$oid": "675b30000000000000000008" },
+    "itemName": "Sugar",
+    "itemCount": 1,
+    "itemDescription": "Brown sugar, 2lb bag",
+    "belongsTo": { "$oid": "675b20000000000000000004" }
+  },
+  {
+    "_id": { "$oid": "675b30000000000000000009" },
+    "itemName": "Fresh Bread",
+    "itemCount": 1,
+    "itemDescription": "Whole grain loaf",
+    "belongsTo": { "$oid": "675b20000000000000000005" }
+  },
+  {
+    "_id": { "$oid": "675b3000000000000000000A" },
+    "itemName": "Bananas",
+    "itemCount": 6,
+    "itemDescription": "Organic bananas",
+    "belongsTo": { "$oid": "675b20000000000000000005" }
+  }
+]

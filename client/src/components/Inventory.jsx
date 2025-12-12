@@ -118,7 +118,6 @@ export default function Inventory(props) {
                 className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-red-100 hover:bg-red-300 hover:text-accent-foreground h-9 rounded-md px-3"
                 type="button"
                 onClick={(event) => {
-                  console.log(event);
                   event.stopPropagation();
                   document
                     .getElementById(`modal-${props.record._id}`)

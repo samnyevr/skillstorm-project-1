@@ -1,0 +1,32 @@
+[
+  {
+    "_id": { "$oid": "675b20000000000000000001" },
+    "name": "Alex Johnson",
+    "totalStorage": 25,
+    "description": "Loves cooking and keeps most of the grains and pastas."
+  },
+  {
+    "_id": { "$oid": "675b20000000000000000002" },
+    "name": "Maria Chen",
+    "totalStorage": 18,
+    "description": "Usually buys plant-based items and fresh produce."
+  },
+  {
+    "_id": { "$oid": "675b20000000000000000003" },
+    "name": "Jordan Smith",
+    "totalStorage": 30,
+    "description": "Bulk shopper, stores snacks and beverages."
+  },
+  {
+    "_id": { "$oid": "675b20000000000000000004" },
+    "name": "Emily Rivera",
+    "totalStorage": 22,
+    "description": "Organized and keeps everything labeled neatly."
+  },
+  {
+    "_id": { "$oid": "675b20000000000000000005" },
+    "name": "Darius Thompson",
+    "totalStorage": 15,
+    "description": "Keeps minimal items; usually buys fresh weekly."
+  }
+]
